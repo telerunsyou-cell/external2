@@ -1,4 +1,4 @@
-client.on('interactionCreate', async interaction => {
+
     // Only process chat input commands.
     if (!interaction.isChatInputCommand()) return;
 
