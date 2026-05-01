@@ -9,15 +9,13 @@ const client = new Client({
 
 client.commands = new Collection();
 
-// Load commands from /commands
+// Load commands
 const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync(commandsPath).filter(f => f.endsWith('.js'));
 
 for (const file of commandFiles) {
   const command = require(path.join(commandsPath, file));
-  if (command.data && command.execute) {
-    client.commands.set(command.data.name, command);
-  }
+  client.commands.set(command.data.name, command);
 }
 
 client.on('interactionCreate', async interaction => {
@@ -28,8 +26,8 @@ client.on('interactionCreate', async interaction => {
 
   try {
     await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     if (!interaction.replied) {
       await interaction.reply({ content: 'Error executing command.', ephemeral: true });
     }
